@@ -16,7 +16,14 @@ my_font = pygame.font.SysFont('Comic Sans MS', 30)
 player_turn = 1
 game_is_running = True
 
+# function that draws the table and the helpful information besides this like which player turns it is and what part
+# of the table has every player
 def draw_table(screen):
+    """
+    #function that draws the table and the helpful information besides this like which player turns it is and what part
+    #of the table has every player
+    :param screen: is getting the screen on which to draw
+    """
     pygame.draw.rect(screen, (52, 20, 6), pygame.Rect(0,100,800,300))
     for i in range(6):
         pygame.draw.circle(screen,(196,122,88), ((i+1) * 100 + 50, 175), 35)
@@ -32,7 +39,15 @@ def draw_table(screen):
     pygame.display.flip()
 
 
+
 def draw_stones(table, store, screen):
+    """
+    # function that draws on screen the number of stones in every position
+    :param table: table where the values of every hole is kept
+    :param store: list of score of every player
+    :param screen: place where to draw the stones
+    :return:
+    """
     for i in range(6):
         text_surface = my_font.render(str(table[0][i]) + 'x', False, (0,255,0))
         text_surface2 = my_font.render(str(table[1][i]) + 'x', False, (0,255,0))
@@ -44,6 +59,13 @@ def draw_stones(table, store, screen):
 
 
 def verify_move(pos, player_turn):
+    """
+
+    # function that verifies that the position on which the player click is a valid position and the move can be made
+    :param pos: position of the mouse on the screen
+    :param player_turn: index to see which player turn is
+    :return: -1 for an invalid position i in range (6) which means the column that was selected
+    """
     if player_turn == 0:
         if pos[1] not in range(140, 210):
             return -1
@@ -64,6 +86,10 @@ def verify_move(pos, player_turn):
 
 
 def init_game():
+    """
+    # function that is setting the default value in every position and initialize the scores of every player
+    :return: the values of store and table
+    """
     store= []
     store.append(0)
     store.append(0)
@@ -73,6 +99,12 @@ def init_game():
     return (store, table)
 
 def make_move(player_turn, selected_column):
+    """
+    # function that change all the needed values when a move is made
+    :param player_turn: to see the player whose turn is right now
+    :param selected_column: the column that the player clicked
+    :return:
+    """
     line = player_turn
     stones = table[line][selected_column]
     table[line][selected_column] = 0
@@ -101,6 +133,10 @@ def make_move(player_turn, selected_column):
 
 
 def end_game(player_turn):
+    """
+    # function that see which player has won and is showing this information on the screen
+    :param player_turn: to see the player whose turn is right now
+    """
     store[player_turn] = store[player_turn] + sum(table[1-player_turn])
     table[1-player_turn] = [0] * 6
     if store[player_turn] > store[1 - player_turn]:
