@@ -12,32 +12,29 @@ screen = pygame.display.set_mode([800, 500])
 pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
-
 player_turn = 1
 game_is_running = True
 
-# function that draws the table and the helpful information besides this like which player turns it is and what part
-# of the table has every player
+
 def draw_table(screen):
     """
     #function that draws the table and the helpful information besides this like which player turns it is and what part
     #of the table has every player
     :param screen: is getting the screen on which to draw
     """
-    pygame.draw.rect(screen, (52, 20, 6), pygame.Rect(0,100,800,300))
+    pygame.draw.rect(screen, (52, 20, 6), pygame.Rect(0, 100, 800, 300))
     for i in range(6):
-        pygame.draw.circle(screen,(196,122,88), ((i+1) * 100 + 50, 175), 35)
-        pygame.draw.circle(screen,(196,122,88), ((i+1) * 100 + 50, 325), 35)
-    pygame.draw.ellipse(screen, (196,122,88), (25, 125, 75, 250))
+        pygame.draw.circle(screen, (196, 122, 88), ((i + 1) * 100 + 50, 175), 35)
+        pygame.draw.circle(screen, (196, 122, 88), ((i + 1) * 100 + 50, 325), 35)
+    pygame.draw.ellipse(screen, (196, 122, 88), (25, 125, 75, 250))
     pygame.draw.ellipse(screen, (196, 122, 88), (700, 125, 75, 250))
-    text_surface = my_font.render("Player 1", False, (0,255,0))
-    screen.blit(text_surface, (350,50))
+    text_surface = my_font.render("Player 1", False, (0, 255, 0))
+    screen.blit(text_surface, (350, 50))
     text_surface = my_font.render("Player 2", False, (0, 255, 0))
     screen.blit(text_surface, (350, 400))
     text_surface = my_font.render(f"Turn:Player {player_turn + 1}", False, (0, 255, 0))
     screen.blit(text_surface, (0, 50))
     pygame.display.flip()
-
 
 
 def draw_stones(table, store, screen):
@@ -49,13 +46,13 @@ def draw_stones(table, store, screen):
     :return:
     """
     for i in range(6):
-        text_surface = my_font.render(str(table[0][i]) + 'x', False, (0,255,0))
-        text_surface2 = my_font.render(str(table[1][i]) + 'x', False, (0,255,0))
-        screen.blit(text_surface, ((i+1) * 100 + 25, 150))
-        screen.blit(text_surface2,((i+1) * 100 + 25, 300))
+        text_surface = my_font.render(str(table[0][i]) + 'x', False, (0, 255, 0))
+        text_surface2 = my_font.render(str(table[1][i]) + 'x', False, (0, 255, 0))
+        screen.blit(text_surface, ((i + 1) * 100 + 25, 150))
+        screen.blit(text_surface2, ((i + 1) * 100 + 25, 300))
     for i in range(2):
         text_surface = my_font.render(str(store[i]) + 'x', False, (0, 255, 0))
-        screen.blit(text_surface,(i*675 + 50,225))
+        screen.blit(text_surface, (i * 675 + 50, 225))
 
 
 def verify_move(pos, player_turn):
@@ -71,7 +68,7 @@ def verify_move(pos, player_turn):
             return -1
         else:
             for i in range(6):
-                if pos[0] in range((i+1) * 100 + 50 - 35, (i+1) * 100 + 50 + 35):
+                if pos[0] in range((i + 1) * 100 + 50 - 35, (i + 1) * 100 + 50 + 35):
                     return i
             return -1
     else:
@@ -79,10 +76,9 @@ def verify_move(pos, player_turn):
             return -1
         else:
             for i in range(6):
-                if pos[0] in range((i+1) * 100 + 50 - 35, (i+1) * 100 + 50 + 35):
+                if pos[0] in range((i + 1) * 100 + 50 - 35, (i + 1) * 100 + 50 + 35):
                     return i
             return -1
-
 
 
 def init_game():
@@ -90,13 +86,10 @@ def init_game():
     # function that is setting the default value in every position and initialize the scores of every player
     :return: the values of store and table
     """
-    store= []
-    store.append(0)
-    store.append(0)
-    table = []
-    table.append([4,4,4,4,4,4])
-    table.append([4,4,4,4,4,4])
-    return (store, table)
+    store = [0, 0]
+    table = [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4]]
+    return store, table
+
 
 def make_move(player_turn, selected_column):
     """
@@ -127,9 +120,9 @@ def make_move(player_turn, selected_column):
             continue
         table[line][selected_column] = table[line][selected_column] + 1
         stones = stones - 1
-    if line == player_turn and selected_column in range(0,5) and table[line][selected_column]  == 1:
+    if line == player_turn and selected_column in range(0, 5) and table[line][selected_column] == 1:
         store[player_turn] = store[player_turn] + table[1 - line][selected_column]
-        table[1-line][selected_column] = 0
+        table[1 - line][selected_column] = 0
 
 
 def end_game(player_turn):
@@ -137,8 +130,8 @@ def end_game(player_turn):
     # function that see which player has won and is showing this information on the screen
     :param player_turn: to see the player whose turn is right now
     """
-    store[player_turn] = store[player_turn] + sum(table[1-player_turn])
-    table[1-player_turn] = [0] * 6
+    store[player_turn] = store[player_turn] + sum(table[1 - player_turn])
+    table[1 - player_turn] = [0] * 6
     if store[player_turn] > store[1 - player_turn]:
         print(f"Player {player_turn + 1} wins")
         text_surface = my_font.render(f"Player {player_turn + 1} wins", False, (0, 255, 0))
@@ -149,6 +142,7 @@ def end_game(player_turn):
         screen.blit(text_surface, (300, 0))
     pygame.display.flip()
 
+
 # Run until the user asks to quit
 running = True
 # Fill the background with white
@@ -157,14 +151,10 @@ rez = init_game()
 store = rez[0]
 table = rez[1]
 
-
-
 screen.fill((255, 255, 255))
 
 draw_table(screen)
-draw_stones(table,store,screen)
-
-
+draw_stones(table, store, screen)
 
 while running:
 
@@ -183,13 +173,13 @@ while running:
                     end_game(player_turn)
                     game_is_running = False
                 draw_table(screen)
-                draw_stones(table,store,screen)
+                draw_stones(table, store, screen)
                 player_turn = 1 - player_turn
                 print(store, int(opponent_type))
                 if int(opponent_type) == 1:
-                    move = random.randint(0,5)
+                    move = random.randint(0, 5)
                     while table[player_turn][move] == 0:
-                        move = random.randint(0,5)
+                        move = random.randint(0, 5)
                     print(move)
                     make_move(player_turn, move)
                     screen.fill((255, 255, 255))
@@ -199,9 +189,6 @@ while running:
                     player_turn = 1 - player_turn
                     draw_table(screen)
                     draw_stones(table, store, screen)
-
-
-
 
     # Flip the display
     pygame.display.flip()
