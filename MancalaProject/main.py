@@ -106,12 +106,12 @@ def end_game(player_turn):
     if store[player_turn] > store[1 - player_turn]:
         print(f"Player {player_turn + 1} wins")
         text_surface = my_font.render(f"Player {player_turn + 1} wins", False, (0, 255, 0))
-        screen.blit(text_surface, (350, 50))
+        screen.blit(text_surface, (300, 0))
     else:
         print(f"Player {1 - player_turn + 1} wins")
         text_surface = my_font.render(f"Player {1 - player_turn + 1} wins", False, (0, 255, 0))
-        screen.blit(text_surface, (350, 50))
-
+        screen.blit(text_surface, (300, 0))
+    pygame.display.flip()
 
 # Run until the user asks to quit
 running = True
@@ -142,13 +142,13 @@ while running:
             print(is_valid_move)
             if is_valid_move != -1:
                 make_move(player_turn, is_valid_move)
+                screen.fill((255, 255, 255))
                 if max(table[player_turn]) == 0:
                     end_game(player_turn)
                     game_is_running = False
-                player_turn = 1 - player_turn
-                screen.fill((255, 255, 255))
                 draw_table(screen)
                 draw_stones(table,store,screen)
+                player_turn = 1 - player_turn
                 print(store, int(opponent_type))
                 if int(opponent_type) == 1:
                     move = random.randint(0,5)
@@ -156,13 +156,14 @@ while running:
                         move = random.randint(0,5)
                     print(move)
                     make_move(player_turn, move)
+                    screen.fill((255, 255, 255))
                     if max(table[player_turn]) == 0:
                         end_game(player_turn)
                         game_is_running = False
                     player_turn = 1 - player_turn
-        screen.fill((255, 255, 255))
-        draw_table(screen)
-        draw_stones(table, store, screen)
+                    draw_table(screen)
+                    draw_stones(table, store, screen)
+
 
 
 
